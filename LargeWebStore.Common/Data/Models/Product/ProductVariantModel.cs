@@ -1,4 +1,5 @@
-﻿using LargeWebStore.Common.Domain.Data;
+﻿using LargeWebStore.Common.Data.Models.Shipping;
+using LargeWebStore.Common.Domain.Data;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,15 +16,17 @@ namespace LargeWebStore.Common.Data.Models.Product
         public double Depth { get; set; }
         public double Weight { get; set; }
         public bool ShippingRequired { get; set; }
-
-        public Guid ProductId { get; set; }
+        public bool IsOnHold { get; set; }
+        public bool IsOnHand { get; set; }
 
         [ForeignKey("ProductId")]
         public ProductModel Product { get; set; }
+        public Guid ProductId { get; set; }
 
         public Guid TranslationId { get; set; }
 
-        [ForeignKey("TranslationId")]
-        public ProductVariantTranslationModel Translation { get; set; }
+        [ForeignKey("TaxCategoryId")]
+        public TaxCategoryModel TaxCategory { get; set; }
+        public Guid? TaxCategoryId { get; set; }
     }
 }

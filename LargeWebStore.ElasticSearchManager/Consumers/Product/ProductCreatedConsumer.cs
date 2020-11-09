@@ -23,14 +23,14 @@ namespace LargeWebStore.ElasticSearchManager.Consumers.Product
 
         public async Task Consume(ConsumeContext<IProductConsumer> context)
         {
-            _logger.LogInformation("ProductCreatedConsumer Command received: {0}; {1}", context.Message.Id, context.Message.Code);
+            _logger.LogInformation("ProductCreatedConsumer Command received: {0}", context.Message.Code);
 
             var document = new ProductDocument
             {
                 Id = 1,
                 Code = context.Message.Code,
                 Description = context.Message.Description,
-                Enabled = context.Message.Enabled,
+                Enabled = (bool)context.Message.Enabled,
                 Locale = context.Message.Locale,
                 Name = context.Message.Name,
                 Rating = context.Message.Rating,

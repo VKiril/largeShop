@@ -7,5 +7,7 @@ namespace LargeWebStore.Common.Data.Models.Shipping
 {
     public class ShipmentModel : ModelBase
     {
+        public string State { get; set; }
+        public string Tracking { get; set; }
     }
 }

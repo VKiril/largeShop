@@ -7,5 +7,8 @@ namespace LargeWebStore.Common.Data.Models.Shipping
 {
     public class ShippingMethodModel : ModelBase
     {
+        public string Code { get; set; }
+        public string Configuration { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }

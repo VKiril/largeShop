@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using LargeWebStore.Common.Data;
 using LargeWebStore.DWH.Api.Util;
 using MediatR;
@@ -38,6 +39,7 @@ namespace LargeWebStore.DWH.Api
             services.AddControllers();
             services.AddDbInfrastructure(Configuration);
             services.RegisterQueueServices(Configuration);
+            services.AddAutoMapper(typeof(Startup));
             services.RegisterSwagger();
             services.RegisterDI();
             services.AddMediatR(typeof(Startup).Assembly);

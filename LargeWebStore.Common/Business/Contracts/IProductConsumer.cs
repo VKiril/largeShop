@@ -4,13 +4,23 @@ namespace LargeWebStore.Common.Business.Contracts
 {
     public interface IProductConsumer
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; }
-        public bool Enabled { get; set; }
-        public double Rating { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ShortDescription { get; set; }
-        public string Locale { get; set; }
+        string Code { get; set; }
+        bool? Enabled { get; set; }
+        bool? ShippingRequired { get; set; }
+        float Price { get; set; }
+        double Rating { get; set; }
+        string Name { get; set; }
+        string Slug { get; set; }
+        string MetaKeywords { get; set; }
+        string MetaDescription { get; set; }
+        string Description { get; set; }
+        string ShortDescription { get; set; }
+        string Locale { get; set; }
+        float Width { get; set; }
+        float Height { get; set; }
+        float Depth { get; set; }
+        float Weight { get; set; }
+        string Attributes { get; set; }
+        int Quantity { get; set; }
     }
 }

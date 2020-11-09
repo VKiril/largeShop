@@ -17,10 +17,10 @@ namespace LargeWebStore.DWH.Api.Domain
     public class CreateProductHandler : IRequestHandler<CreateProductCommand, ProductDto>
     {
         private readonly IPublishEndpoint _endpoint;
-        private readonly IProductRepository _productRepository;
+        private readonly IProdutRepositoryWrapper _productRepository;
         private readonly IProductTranslationRepository _productTranslationRepository;
 
-        public CreateProductHandler(IPublishEndpoint endpoint, IProductRepository productRepository, 
+        public CreateProductHandler(IPublishEndpoint endpoint, IProdutRepositoryWrapper productRepository, 
             IProductTranslationRepository productTranslationRepository)
         {
             _endpoint = endpoint;
@@ -30,43 +30,84 @@ namespace LargeWebStore.DWH.Api.Domain
 
         public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            //todo: either use automaper or create smth own
+            // create product variant
+            // create product translation
+            // create product
+
+            // save them
+            // publish message
+            // save logs
+            // return result 
+
             var product = new ProductModel
             {
                 Code = request.Code,
                 Enabled = request.Enabled ?? true,
                 Rating = request.Rating,
             };
+            _productRepository.ProductRepository.Add(product);
+            await _productRepository.ProductRepository.SaveChangesAsync();
 
-            _productRepository.Add(product);
-            await _productRepository.SaveChangesAsync();
 
             var productTranslation = new ProductTranslationModel
             {
-                Product = product,
-                ProductId = product.Id,
                 Name = request.Name,
                 Description = request.Description,
                 Locale = request.Locale,
                 ShortDescription = request.ShortDescription,
                 Slug = request.Name.ToLower().Replace(" ", "_"),
+                Product = product
+            };
+            _productRepository.ProductTranslationRepository.Add(productTranslation);
+            await _productRepository.ProductTranslationRepository.SaveChangesAsync();
+
+            var productVariant = new ProductVariantModel
+            {
+                Code = request.Code + "-variant",
+                Depth = request.Depth,
+                ShippingRequired = (bool)request.ShippingRequired,
+                Weight = request.Weight,
+                Height = request.Height,
+                Width = request.Width,
+                Product = product,
             };
 
-            _productTranslationRepository.Add(productTranslation);
-            await _productTranslationRepository.SaveChangesAsync();
+
+            var productVariantTranslation = new ProductVariantTranslationModel
+            {
+                Name = request.VariantName,
+                Locale = request.Locale,
+                ProductVariant = productVariant
+            };
+
+            _productRepository.ProductVariantTranslationRepository.Add(productVariantTranslation);
+            await _productRepository.ProductVariantTranslationRepository.SaveChangesAsync();
+
+            _productRepository.ProductVariantRepository.Add(productVariant);
+            await _productRepository.ProductRepository.SaveChangesAsync();
 
             string jsonString = JsonConvert.SerializeObject(request);
             await _endpoint.Publish<ILogConsumer>(new { Message = jsonString });
             await _endpoint.Publish<IProductConsumer>(
                 new { 
-                    Id = product.Id, 
-                    Code = product.Code, 
-                    Rating = product.Rating, 
-                    Enabled = product.Enabled, 
-                    Name = productTranslation.Name, 
-                    Description = productTranslation.Description,
-                    ShortDescription = productTranslation.ShortDescription,
-                    Locale = productTranslation.Locale
+                    Id = product.Id,
+                    Code = request.Code,
+                    Enabled = request.Enabled,
+                    ShippingRequired = request.ShippingRequired,
+                    Price = request.Price,
+                    Rating = request.Rating,
+                    Name = request.Name,
+                    Slug = request.Slug,
+                    MetaKeywords = request.MetaKeywords,
+                    Description = request.Description,
+                    ShortDescription = request.ShortDescription,
+                    Locale = request.Locale,
+                    Width = request.Width,
+                    Height = request.Height,
+                    Depth = request.Depth,
+                    Weight = request.Weight,
+                    Attributes = request.Attributes,
+                    Quantity = request.Quantity,
                 }
             );
 

@@ -16,6 +16,9 @@ namespace LargeWebStore.Common.Data
         public DbSet<ProductTranslationModel> ProductTranslations { get; set; }
         public DbSet<ProductVariantModel> ProductVariants { get; set; }
         public DbSet<ProductVariantTranslationModel> ProductVariantTranslations { get; set; }
+        public DbSet<TaxonModel> Taxons { get; set; }
+        public DbSet<TaxonTranslationModel> TaxonTranslations { get; set; }
+		
 
 		public LocalWebStoreContext(DbContextOptions<LocalWebStoreContext> options) : base(options)
         {

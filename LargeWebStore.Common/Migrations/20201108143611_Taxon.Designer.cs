@@ -3,15 +3,17 @@ using System;
 using LargeWebStore.Common.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LargeWebStore.Common.Migrations
 {
     [DbContext(typeof(LocalWebStoreContext))]
-    partial class LocalWebStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201108143611_Taxon")]
+    partial class Taxon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,6 +208,8 @@ namespace LargeWebStore.Common.Migrations
 
                     b.HasIndex("TaxCategoryId");
 
+                    b.HasIndex("TranslationId");
+
                     b.ToTable("ProductVariants");
                 });
 
@@ -390,6 +394,12 @@ namespace LargeWebStore.Common.Migrations
                     b.HasOne("LargeWebStore.Common.Data.Models.Shipping.TaxCategoryModel", "TaxCategory")
                         .WithMany()
                         .HasForeignKey("TaxCategoryId");
+
+                    b.HasOne("LargeWebStore.Common.Data.Models.Product.ProductVariantTranslationModel", "Translation")
+                        .WithMany()
+                        .HasForeignKey("TranslationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LargeWebStore.Common.Data.Models.Product.ProductVariantTranslationModel", b =>

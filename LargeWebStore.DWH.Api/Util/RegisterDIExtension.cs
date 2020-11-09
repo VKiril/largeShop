@@ -3,10 +3,6 @@ using LargeWebStore.Common.Data.Repositories.Contracts;
 using LargeWebStore.Common.Data.Repositories.Product;
 using LargeWebStore.Common.Data.Repositories.Product.Contracts;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LargeWebStore.DWH.Api.Util
 {
@@ -16,6 +12,12 @@ namespace LargeWebStore.DWH.Api.Util
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductTranslationRepository, ProductTranslationRepository>();
+            services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+            services.AddScoped<IProductVariantTranslationRepository, ProductVariantTranslationRepository>();
+            services.AddScoped<ITaxonRepository, TaxonRepository>();
+            services.AddScoped<ITaxonTranslationRepository, TaxonTranslationRepository>();
+            
+            services.AddScoped<IProdutRepositoryWrapper, ProdutRepositoryWrapper>();
 
             return services;
         }

@@ -3,15 +3,17 @@ using System;
 using LargeWebStore.Common.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LargeWebStore.Common.Migrations
 {
     [DbContext(typeof(LocalWebStoreContext))]
-    partial class LocalWebStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201107125256_UpdateProduct")]
+    partial class UpdateProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,7 +181,7 @@ namespace LargeWebStore.Common.Migrations
                     b.Property<bool>("ShippingRequired")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("TaxCategoryId")
+                    b.Property<Guid>("TaxCategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("Tracked")
@@ -206,6 +208,9 @@ namespace LargeWebStore.Common.Migrations
 
                     b.HasIndex("TaxCategoryId");
 
+                    b.HasIndex("TranslationId")
+                        .IsUnique();
+
                     b.ToTable("ProductVariants");
                 });
 
@@ -224,80 +229,12 @@ namespace LargeWebStore.Common.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ProductVariantId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductVariantId");
 
                     b.ToTable("ProductVariantTranslations");
-                });
-
-            modelBuilder.Entity("LargeWebStore.Common.Data.Models.Product.TaxonModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("Parent")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("TreeLevel")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("TreeRoot")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Taxons");
-                });
-
-            modelBuilder.Entity("LargeWebStore.Common.Data.Models.Product.TaxonTranslationModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Locale")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Slug")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TaxonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaxonId");
-
-                    b.ToTable("TaxonTranslations");
                 });
 
             modelBuilder.Entity("LargeWebStore.Common.Data.Models.Shipping.TaxCategoryModel", b =>
@@ -389,23 +326,13 @@ namespace LargeWebStore.Common.Migrations
 
                     b.HasOne("LargeWebStore.Common.Data.Models.Shipping.TaxCategoryModel", "TaxCategory")
                         .WithMany()
-                        .HasForeignKey("TaxCategoryId");
-                });
-
-            modelBuilder.Entity("LargeWebStore.Common.Data.Models.Product.ProductVariantTranslationModel", b =>
-                {
-                    b.HasOne("LargeWebStore.Common.Data.Models.Product.ProductVariantModel", "ProductVariant")
-                        .WithMany()
-                        .HasForeignKey("ProductVariantId")
+                        .HasForeignKey("TaxCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("LargeWebStore.Common.Data.Models.Product.TaxonTranslationModel", b =>
-                {
-                    b.HasOne("LargeWebStore.Common.Data.Models.Product.TaxonModel", "Taxon")
-                        .WithMany()
-                        .HasForeignKey("TaxonId")
+                    b.HasOne("LargeWebStore.Common.Data.Models.Product.ProductVariantTranslationModel", "Translation")
+                        .WithOne("Translatable")
+                        .HasForeignKey("LargeWebStore.Common.Data.Models.Product.ProductVariantModel", "TranslationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
