@@ -13,11 +13,35 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: cd LargeWebStore.Api dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration) Api'
-- script: cd LargeWebStore.DWH.Api dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration) DWH.Api'
-- script: cd LargeWebStore.ElasticSearchManager dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration) ElasticSearchManager'
-- script: cd LargeWebStore.Logs dotnet build --configuration $(buildConfiguration)
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build LargeWebStore.DWH/LargeWebStore.DWH.csproj'
+  inputs:
+    command: 'dotnet build'
+    projects: 'LargeWebStore.DWH/LargeWebStore.DWH.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build LargeWebStore.DWH.Api/LargeWebStore.DWH.Api.csproj'
+  inputs:
+    command: 'dotnet build'
+    publishWebPprojects: false
+    projects: 'LargeWebStore.DWH.Api/LargeWebStore.DWH.Api.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build LargeWebStore.ElasticSearchManager/LargeWebStore.ElasticSearchManager.csproj'
+  inputs:
+    command: 'dotnet build'
+    projects: 'LargeWebStore.ElasticSearchManager/LargeWebStore.ElasticSearchManager.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build LargeWebStore.Logs/LargeWebStore.Logs.csproj'
+  inputs:
+    command: 'dotnet build'
+    projects: 'LargeWebStore.Logs/LargeWebStore.Logs.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration) Logs'
