@@ -12,5 +12,8 @@ namespace LargeWebStore.Common.Data.Models.Product
         public double Rating { get; set; }
         public ProductTranslationModel Translation { get; set; }
         public ProductImageModel Image { get; set; }
+
+        public Guid TaxonId { get; set; }
+        public TaxonModel Taxon { get; set; }
     }
 }

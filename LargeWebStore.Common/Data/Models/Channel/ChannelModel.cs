@@ -2,6 +2,7 @@
 using LargeWebStore.Common.Domain.Data.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace LargeWebStore.Common.Data.Models.Channel

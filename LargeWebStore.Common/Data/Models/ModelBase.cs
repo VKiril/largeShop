@@ -10,6 +10,9 @@ namespace LargeWebStore.Common.Domain.Data
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-
+        public virtual void SetId(Guid id)
+        {
+            Id = id;
+        }
     }
 }

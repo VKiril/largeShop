@@ -66,10 +66,15 @@ namespace LargeWebStore.Common.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("double precision");
 
+                    b.Property<Guid>("TaxonId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TaxonId");
 
                     b.ToTable("ProductModel");
                 });
@@ -249,13 +254,13 @@ namespace LargeWebStore.Common.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("Parent")
+                    b.Property<Guid?>("Parent")
                         .HasColumnType("uuid");
 
                     b.Property<int>("TreeLevel")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("TreeRoot")
+                    b.Property<Guid?>("TreeRoot")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -357,6 +362,15 @@ namespace LargeWebStore.Common.Migrations
                     b.HasOne("LargeWebStore.Common.Data.Models.Product.ProductModel", "Product")
                         .WithOne("Image")
                         .HasForeignKey("LargeWebStore.Common.Data.Models.Product.ProductImageModel", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LargeWebStore.Common.Data.Models.Product.ProductModel", b =>
+                {
+                    b.HasOne("LargeWebStore.Common.Data.Models.Product.TaxonModel", "Taxon")
+                        .WithMany()
+                        .HasForeignKey("TaxonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

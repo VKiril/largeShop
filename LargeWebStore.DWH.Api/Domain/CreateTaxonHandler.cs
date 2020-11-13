@@ -6,6 +6,7 @@ using LargeWebStore.Common.Domain.Dtos.Product;
 using MassTransit;
 using MediatR;
 using Newtonsoft.Json;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -53,6 +54,8 @@ namespace LargeWebStore.DWH.Api.Domain
 
             var result = new TaxonDto
             {
+                Id = taxon.Id,
+                TreeRoot = (Guid) taxon.TreeRoot,
                 Code = request.Code,
                 Description = request.Description,
                 Locale = request.Locale,

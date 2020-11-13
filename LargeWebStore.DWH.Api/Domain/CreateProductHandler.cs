@@ -41,6 +41,7 @@ namespace LargeWebStore.DWH.Api.Domain
 
             var product = new ProductModel
             {
+                TaxonId = request.TaxonId,
                 Code = request.Code,
                 Enabled = request.Enabled ?? true,
                 Rating = request.Rating,

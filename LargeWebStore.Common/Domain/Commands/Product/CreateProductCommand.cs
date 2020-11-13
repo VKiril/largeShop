@@ -13,6 +13,7 @@ namespace LargeWebStore.Common.Domain.Commands.Product
 
         [JsonConstructor]
         public CreateProductCommand(
+            Guid taxonId,
             string code,
             bool enabled,
             bool shippingRequired,
@@ -33,6 +34,7 @@ namespace LargeWebStore.Common.Domain.Commands.Product
             int quantity
             )
         {
+            TaxonId = taxonId;
             Code = code;
             Enabled = enabled;
             ShippingRequired = shippingRequired;
@@ -52,6 +54,10 @@ namespace LargeWebStore.Common.Domain.Commands.Product
             Attributes = attributes;
             Quantity = quantity;
         }
+
+        [JsonProperty("taxonId")]
+        [Required]
+        public Guid TaxonId { get; set; }
 
         [JsonProperty("code")]
         [Required]

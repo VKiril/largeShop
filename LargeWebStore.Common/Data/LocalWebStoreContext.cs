@@ -1,4 +1,5 @@
-﻿using LargeWebStore.Common.Data.Models.Product;
+﻿using LargeWebStore.Common.Data.Models.Interfaces;
+using LargeWebStore.Common.Data.Models.Product;
 using LargeWebStore.Common.Domain.Data;
 using LargeWebStore.Common.Domain.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -28,13 +29,12 @@ namespace LargeWebStore.Common.Data
 		{
 			foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
 			{
-
 				switch (entry.State)
 				{
 					case EntityState.Added:
 						entry.Entity.CreatedAt = DateTime.Now;
 						entry.Entity.UpdatedAt = DateTime.MinValue;
-						entry.Entity.Id = Guid.NewGuid();
+						entry.Entity.SetId(Guid.NewGuid());
 						break;
 					case EntityState.Modified:
 						entry.Entity.UpdatedAt = DateTime.Now;
