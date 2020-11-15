@@ -17,3 +17,8 @@ LargeWebStore.Logs/obj/
 LargeWebStore.Common/obj/
 LargeWebStore.Common/bin/
 LargeWebStore.Common/.vs/
+
+LargeWebStore.DWH.Web/obj/
+LargeWebStore.DWH.Web/bin/
+LargeWebStore.DWH.Web/.vs/
+LargeWebStore.DWH.Web/ClientApp/node_modules/
